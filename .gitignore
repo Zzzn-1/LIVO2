@@ -1,0 +1,105 @@
+# ROS / catkin workspace outputs
+.catkin_tools/
+.catkin_workspace
+build/
+build_isolated/
+devel/
+devel_isolated/
+install/
+install_isolated/
+log/
+logs/
+.rosinstall
+.rosinstall.bak
+
+# Nested package build outputs
+**/build/
+**/cmake-build-*/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+CTestConfiguration.ini
+CTestCustom.cmake
+
+# Native build products
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+*.out
+
+# Python caches and packaging
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Machine learning outputs and local datasets
+*.pt
+*.pth
+*.onnx
+*.engine
+*.tflite
+*.weights
+*.bag
+*.db3
+*.pcd
+*.ply
+*.las
+*.laz
+*.npy
+*.npz
+runs/
+datasets/
+weights/
+
+# Videos and large local bundles
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.cache/
+.tmp/
+tmp/
+
+# IDE / editor / OS files
+.vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# Local agent/tooling state
+.codex/
+.agents/

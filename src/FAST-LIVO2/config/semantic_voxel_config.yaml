@@ -1,0 +1,66 @@
+# 语义体素地图配置文件
+
+# 发布控制
+publish:
+  pub_plane_en: true                    # 启用平面地图发布（必须启用才能看到体素地图）
+  pub_semantic_color_en: true           # 启用语义颜色体素地图发布
+
+# SETIC处理控制
+common:
+  setic_en: 1                           # 启用SETIC语义处理
+  setic_topic: "/setic/image_raw"       # 语义图像话题
+
+# 相机内参配置（需要根据实际相机参数调整）
+camera:
+  fx: 517.3                             # 焦距 x
+  fy: 516.5                             # 焦距 y  
+  cx: 325.1                             # 主点 x
+  cy: 249.7                             # 主点 y
+
+# 体素地图配置
+lio:
+  voxel_size: 0.5                       # 体素大小（米）
+  max_layer: 2                          # 最大层级
+  min_eigen_value: 0.01                 # 最小特征值阈值
+
+# 语义类别与颜色映射
+semantic_colors:
+  # 格式: [R, G, B] 范围 0-1.0
+  background: [0.5, 0.5, 0.5]          # 背景 - 灰色
+  building: [1.0, 0.0, 0.0]            # 建筑物 - 红色
+  vegetation: [0.0, 1.0, 0.0]          # 植被 - 绿色
+  road: [0.0, 0.0, 1.0]                # 道路 - 蓝色
+  vehicle: [1.0, 1.0, 0.0]             # 车辆 - 黄色
+  person: [1.0, 0.0, 1.0]              # 行人 - 洋红色
+  sky: [0.0, 1.0, 1.0]                 # 天空 - 青色
+  ground: [1.0, 0.5, 0.0]              # 地面 - 橙色
+  sign: [0.5, 0.0, 1.0]                # 标志牌 - 紫色
+  other: [1.0, 0.75, 0.8]              # 其他物体 - 粉色
+  trunk: [0.65, 0.16, 0.16]            # 树干 - 棕色
+  water: [0.0, 0.5, 0.5]               # 水面 - 深青色
+  fence: [0.5, 0.5, 0.0]               # 围栏 - 深黄色
+  pole: [0.5, 0.0, 0.5]                # 柱子 - 深紫色
+  wall: [0.75, 0.75, 0.75]             # 墙面 - 浅灰色
+  shadow: [0.25, 0.25, 0.25]           # 阴影 - 深灰色
+
+# 语义处理参数
+semantic_processing:
+  dominant_label_threshold: 0.3         # 主导标签阈值（30%以上才认为是主导语义）
+  min_semantic_points: 5                # 最少语义点数
+  semantic_confidence_threshold: 0.7    # 语义置信度阈值
+  projection_max_distance: 50.0         # 投影最大距离
+  projection_min_distance: 0.5          # 投影最小距离
+  force_semantic_threshold: 0.8         # 强制语义颜色阈值
+
+# 可视化参数
+visualization:
+  semantic_alpha: 0.9                   # 语义体素透明度
+  geometric_alpha: 0.5                  # 几何体素透明度（无语义时）
+  marker_scale_factor: 1.0              # 标记缩放因子
+  enhance_semantic_colors: true         # 增强语义颜色显示
+
+# 调试选项
+debug:
+  print_semantic_stats: true           # 打印语义统计信息
+  print_color_mapping: true            # 打印颜色映射信息
+  enable_detailed_logs: false          # 启用详细日志（可能影响性能） 

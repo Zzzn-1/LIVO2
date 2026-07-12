@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- SETIC体素地图测试启动文件 -->
+  
+  <node pkg="fast_livo" type="fastlivo_mapping" name="fastlivo_mapping" output="screen">
+    <!-- 基本参数 -->
+    <rosparam file="$(find fast_livo)/config/setic_voxel_config.yaml" command="load"/>
+    
+    <!-- SETIC相关话题重映射 -->
+    <remap from="/setic/image_raw" to="/semantic_camera/image_raw"/>
+    <remap from="/setic_planes" to="/semantic_visualization/planes"/>
+    <remap from="/setic_voxel_map" to="/semantic_mapping/point_cloud"/>
+    <remap from="/setic_img" to="/semantic_visualization/processed_image"/>
+  </node>
+  
+  <!-- RViz可视化 -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find fast_livo)/rviz/setic_voxel_visualization.rviz" if="$(arg use_rviz)"/>
+  
+  <!-- 参数 -->
+  <arg name="use_rviz" default="true"/>
+  
+  <!-- 输出信息 -->
+  <group ns="setic_debug">
+    <node name="republish_rgb" pkg="image_transport" type="republish" args="raw in:=/rgb_img raw out:=/setic_debug/rgb_image"/>
+    <node name="republish_semantic" pkg="image_transport" type="republish" args="raw in:=/setic_img raw out:=/setic_debug/semantic_image"/>
+  </group>
+  
+</launch> 

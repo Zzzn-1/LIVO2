@@ -1,0 +1,59 @@
+# SETIC 语义处理配置文件
+# 关键修复：语义处理优化参数
+
+setic:
+  # 语义处理控制
+  enable: true                    # 是否启用语义处理
+  async_processing: true          # 异步处理模式
+  
+  # 性能优化参数
+  max_process_time_ms: 50         # 最大处理时间(毫秒)
+  max_points_per_frame: 1000      # 每帧最大处理点数
+  skip_threshold: 3               # 跳帧阈值
+  min_semantic_pixels: 100        # 最小语义像素数
+  
+  # 缓冲区管理
+  max_buffer_size: 2              # 最大缓冲区大小
+  adaptive_skip: true             # 自适应跳帧
+  skip_interval_base: 1           # 基础跳帧间隔
+  skip_interval_overload: 3       # 过载时跳帧间隔
+  
+  # 相机参数
+  camera_intrinsics:
+    fx: 460.0
+    fy: 460.0 
+    cx: 320.0
+    cy: 240.0
+  
+  # 语义颜色映射
+  semantic_colors:
+    background: [128, 128, 128]   # 背景 - 灰色
+    building: [255, 0, 0]         # 建筑物 - 红色
+    vegetation: [0, 255, 0]       # 植被 - 绿色
+    road: [0, 0, 255]             # 道路 - 蓝色
+    vehicle: [255, 255, 0]        # 车辆 - 黄色
+    person: [255, 0, 255]         # 行人 - 洋红色
+    sky: [0, 255, 255]            # 天空 - 青色
+    ground: [255, 128, 0]         # 地面 - 橙色
+    sign: [128, 0, 255]           # 标志牌 - 紫色
+    other: [255, 192, 203]        # 其他物体 - 粉色
+    trunk: [165, 42, 42]          # 树干 - 棕色
+    water: [0, 128, 128]          # 水面 - 深青色
+    fence: [128, 128, 0]          # 围栏 - 深黄色
+    pole: [128, 0, 128]           # 柱子 - 深紫色
+    wall: [192, 192, 192]         # 墙面 - 浅灰色
+    shadow: [64, 64, 64]          # 阴影 - 深灰色
+
+  # VIO/LIO集成
+  vio_integration:
+    enable_in_vio: true           # 在VIO中启用语义
+    enable_in_lio: false           # 在LIO中启用语义
+    priority_level: 1             # 优先级 (0=低, 1=中, 2=高)
+    block_main_loop: false        # 是否阻塞主循环
+    
+  # 体素地图语义融合
+  voxel_semantic:
+    enable_color_mapping: true    # 启用语义颜色映射
+    dominant_label_threshold: 0.3 # 主导标签阈值
+    semantic_weight: 0.7          # 语义权重
+    geometric_weight: 0.3         # 几何权重 

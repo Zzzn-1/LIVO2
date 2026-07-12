@@ -1,0 +1,26 @@
+# SETIC体素地图配置文件
+setic_voxel_config:
+  # 体素地图基本参数
+  voxel_size: 0.2                    # 体素大小(米)
+  max_plane_points: 100              # 每个体素内最大平面点数
+  min_plane_points: 10               # 构成平面的最小点数
+  plane_threshold: 0.1               # 平面拟合阈值
+  
+  # SETIC特定参数
+  semantic_weight: 0.5               # 语义权重
+  confidence_threshold: 0.7          # 语义置信度阈值
+  max_semantic_distance: 2.0         # 最大语义关联距离
+  
+  # 发布控制
+  enable_setic_voxel_pub: true       # 是否发布SETIC体素地图
+  enable_semantic_plane_pub: true    # 是否发布语义平面
+  pub_frequency: 10                  # 发布频率(Hz)
+  
+  # 地图维护
+  enable_map_sliding: true           # 是否启用地图滑动窗口
+  map_sliding_distance: 50.0         # 滑动窗口距离
+  max_voxel_count: 10000            # 最大体素数量
+  
+  # 调试选项
+  enable_debug_output: true          # 是否启用调试输出
+  save_semantic_map: false           # 是否保存语义地图 

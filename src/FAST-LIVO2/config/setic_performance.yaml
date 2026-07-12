@@ -1,0 +1,103 @@
+# SETIC语义处理性能配置文件
+# 该配置文件用于调整SETIC语义处理的性能参数，减少对主线程VIO-LIO的影响
+
+# =============================================================================
+# SETIC性能参数配置
+# =============================================================================
+
+setic_performance:
+  # 最大允许处理时间 (秒)
+  # 超过此时间将触发性能警告和自适应优化策略
+  # 建议值：0.050 (50ms) 对于实时系统
+  max_processing_time: 0.050
+  
+  # 性能警告阈值 (秒)  
+  # 超过此时间将输出性能警告
+  # 建议值：0.030 (30ms)
+  warning_threshold: 0.030
+  
+  # 自适应下采样阈值 (点云数量)
+  # 当点云数量超过此值且性能不佳时，将启用下采样
+  # 建议值：5000 对于一般硬件，10000 对于高性能硬件
+  adaptive_downsample_threshold: 5000
+  
+  # 启用自适应处理策略
+  # true: 根据性能状态自动调整处理策略
+  # false: 使用固定处理策略
+  enable_adaptive_processing: true
+  
+  # 启用性能监控
+  # true: 输出详细的性能统计信息
+  # false: 仅输出基本信息
+  enable_performance_monitoring: true
+  
+  # SETIC任务队列最大大小
+  # 防止任务积压过多导致内存占用
+  # 建议值：3-5 
+  max_queue_size: 5
+  
+  # 可视化跳帧间隔
+  # 性能不佳时，每N帧执行一次可视化
+  # 建议值：5 (每5帧可视化一次)
+  skip_visualization_interval: 5
+  
+  # 补丁更新跳帧间隔  
+  # 性能不佳时，每N帧执行一次补丁更新
+  # 建议值：3 (每3帧更新一次)
+  skip_patch_update_interval: 3
+  
+  # 自适应图像缩放阈值
+  # 当图像尺寸超过标准分辨率且性能不佳时，缩放到此比例
+  # 建议值：0.8 (缩放到80%)
+  adaptive_image_scale_threshold: 0.8
+
+# =============================================================================
+# 硬件性能预设配置 (可选择使用)
+# =============================================================================
+
+# 高性能硬件配置 (RTX 3080以上 + 32GB RAM)
+high_performance_preset:
+  max_processing_time: 0.030        # 30ms
+  warning_threshold: 0.020          # 20ms  
+  adaptive_downsample_threshold: 10000
+  enable_adaptive_processing: false # 禁用自适应，使用最高质量
+  max_queue_size: 10
+  skip_visualization_interval: 1    # 每帧都可视化
+  skip_patch_update_interval: 1     # 每帧都更新
+
+# 中等性能硬件配置 (RTX 2060-3070 + 16GB RAM)
+medium_performance_preset:
+  max_processing_time: 0.050        # 50ms
+  warning_threshold: 0.030          # 30ms
+  adaptive_downsample_threshold: 5000  
+  enable_adaptive_processing: true
+  max_queue_size: 5
+  skip_visualization_interval: 3
+  skip_patch_update_interval: 2
+
+# 低性能硬件配置 (GTX 1660以下 + 8GB RAM)  
+low_performance_preset:
+  max_processing_time: 0.100        # 100ms
+  warning_threshold: 0.070          # 70ms
+  adaptive_downsample_threshold: 2000
+  enable_adaptive_processing: true
+  max_queue_size: 3
+  skip_visualization_interval: 10   # 减少可视化频率
+  skip_patch_update_interval: 5
+  adaptive_image_scale_threshold: 0.6 # 更激进的图像缩放
+
+# =============================================================================
+# 使用说明
+# =============================================================================
+
+# 1. 根据你的硬件性能选择合适的预设配置，或手动调整setic_performance参数
+# 2. 监控SETIC处理时间输出，如果经常超过warning_threshold，考虑降低质量设置
+# 3. 如果系统实时性要求很高，可以设置更小的max_processing_time值
+# 4. enable_performance_monitoring可以帮助分析性能瓶颈，但会产生额外的输出
+# 5. 在生产环境中，建议disable详细的性能监控以减少日志输出
+
+# 性能调优建议：
+# - 如果主要瓶颈在点云处理：降低adaptive_downsample_threshold
+# - 如果主要瓶颈在图像处理：降低adaptive_image_scale_threshold  
+# - 如果内存不足：降低max_queue_size
+# - 如果CPU使用率过高：增加skip_*_interval值 

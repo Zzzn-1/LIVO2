@@ -1,0 +1,184 @@
+common:
+  verbose_console_log: false
+  keep_loop_event_log_when_quiet: true
+
+  img_topic: "/camera/color/image_raw"
+  lid_topic: "/livox/mid360/lidar"
+  imu_topic: "/livox/mid360/imu"
+  setic_topic: "/setic/image_raw"
+  setic_en: 1
+  img_en: 1
+  lidar_en: 1
+  ros_driver_bug_fix: false
+
+
+setic:
+  use_semantic_if_valid: true
+  min_nonzero_pixels: 200
+  semantic_valid_timeout: 0.5
+  lio_dynamic_filter_en: true
+  lio_semantic_sync_threshold: 0.10
+
+semantic_loop:
+  enable: true
+  static_semantic_topic: "/semantic/static_mask" # 输入语义图
+  pg_frame_id: "camera_init"
+  pg_keyframe_topic: "/semantic_pg/keyframe"
+  pg_loop_topic: "/semantic_pg/loop_constraint"
+  semantic_frame_min_translation: 2.0
+  semantic_frame_min_rotation_deg: 20.0
+  semantic_frame_min_interval: 2.0
+  keyframe_min_translation: 2.0
+  keyframe_min_rotation_deg: 20.0
+  keyframe_min_interval: 2.0
+  min_static_pixels: 500
+  min_static_points: 800
+  semantic_top_k: 3
+  semantic_score_threshold: 0.75
+  max_queue_size: 3
+  candidate_min_time_gap: 40.0
+  candidate_min_path_distance: 10.0
+  candidate_min_euclidean_distance: 0.0
+  candidate_max_euclidean_distance: 0.8
+
+  # 第二层：二维连通域过滤噪声，同类别投影点在三维空间聚类为代理实例
+  topology_verify_enable: true
+  topology_verify_top_n: 3
+  topology_min_component_pixels: 60
+  # 每个三维簇至少包含的投影点数
+  topology_min_component_points: 8
+  topology_cluster_tolerance: 0.60
+  # 合并被动态目标遮挡后产生的相邻同类三维碎片
+  topology_fragment_merge_distance: 0.45
+  topology_max_clusters_per_class: 3
+  topology_min_nodes: 2
+  topology_min_edges: 1
+  topology_max_edge_distance: 10.0
+  topology_edge_tolerance: 0.80
+  topology_score_threshold: 0.35
+  # 节点、边或可比较类别关系不足时，退化为静态点云体素重叠检查
+  topology_fallback_enable: true
+  topology_fallback_voxel_size: 0.8
+  topology_fallback_inlier_ratio_threshold: 0.12
+  topology_fallback_min_inliers: 80
+
+  # 第三层：ICP确认几何并输出相对位姿
+  icp_verify_enable: true
+  icp_verify_top_n: 1
+  icp_min_inliers: 80
+  icp_downsample_leaf_size: 0.10
+  icp_max_correspondence_distance: 0.5
+  icp_max_iterations: 80
+  icp_fitness_threshold: 0.05
+
+  # 回环信息矩阵质量模型
+  information_geo_ratio_ref: 0.8
+  # LoopConstraint.geo_inliers 现在表示匹配拓扑边数
+  information_inlier_ref: 4.0
+  information_non_icp_scale: 0.5
+  
+  verbose_debug_log: false
+  print_top_candidates: false
+  print_icp_detail: false
+  save_loop_event_pcd: false
+  max_geometric_accepts_per_query: 1
+  accept_cooldown_time_gap: 20.0
+  accept_cooldown_path_gap: 8.0
+
+  global_loop_cooldown_time_gap: 4.0
+  global_loop_cooldown_path_gap: 3.0
+  global_loop_cooldown_match_id_window: 2
+  max_relative_rotation_deg: 15.0
+
+
+  isam2_relinearize_threshold: 0.01
+  isam2_relinearize_skip: 1
+
+semantic_pg_backend:
+  # 相邻语义关键帧位姿边权重
+  odom_weight_scale: 0.5
+  # 语义回环边权重，增大时回环修正更强
+  loop_weight_scale: 2.0
+  loop_robust_kernel_enable: true
+  loop_robust_huber_k: 1.345
+
+
+extrin_calib:
+  extrinsic_T: [ -0.011, -0.02329, 0.04412 ]
+  extrinsic_R: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+  # LidarToCamera 
+  Rcl: [0.0722207,  -0.997387, -0.0020542,
+        0.521005,   0.039482,  -0.85264,
+        0.850493,  0.060508,   0.522494] 
+  Pcl: [-0.0442358, -0.411712, 0.168568]
+
+time_offset: 
+  imu_time_offset: 0.0
+  img_time_offset: 0.1
+  exposure_time_init: 0.0
+  img_time_offset_setic: 0.0
+
+preprocess:
+  point_filter_num: 1
+  filter_size_surf: 0.1
+  lidar_type: 1 # Livox Avia LiDAR
+  scan_line: 4
+  blind: 0.8
+
+vio:
+  max_iterations: 5
+  outlier_threshold: 1000 # 78 100 156 #100 200 500 700 infinite
+  img_point_cov: 100 # 100 1000 
+  patch_size: 8
+  patch_pyrimid_level: 4
+  normal_en: true
+  raycast_en: false
+  inverse_composition_en: false
+  exposure_estimate_en: true
+  inv_expo_cov: 0.1
+
+imu:
+  imu_en: true
+  imu_int_frame: 30
+  acc_cov: 0.5 # 0.2
+  gyr_cov: 0.3 # 0.5
+  b_acc_cov: 0.0001 # 0.1
+  b_gyr_cov: 0.0001 # 0.1
+
+lio:
+  max_iterations: 5
+  dept_err: 0.02
+  beam_err: 0.05
+  min_eigen_value: 0.0025 # 0.005
+  voxel_size: 0.5
+  max_layer: 2
+  max_points_num: 50
+  layer_init_num: [5, 5, 5, 5, 5]
+
+local_map:  
+  map_sliding_en: false
+  half_map_size: 100
+  sliding_thresh: 8
+
+uav:
+  imu_rate_odom: false
+  gravity_align_en: false
+
+publish:
+  dense_map_en: true
+  pub_effect_point_en: false 
+  pub_plane_en: false
+  pub_scan_num: 1
+  blind_rgb_points: 0.0
+
+evo:
+  seq_name: "Dynamic01_LIO"
+  pose_output_en: true
+
+pcd_save:
+  pcd_save_en: false
+  colmap_output_en: false # need to set interval = -1
+  filter_size_pcd: 0.15
+  interval: -1
+  # how many LiDAR frames saved in each pcd file;
+  # -1 : all frames will be saved in ONE pcd file, may lead to memory crash when having too much frames.

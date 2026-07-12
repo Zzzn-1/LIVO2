@@ -1,0 +1,67 @@
+# FAST-LIVO2 优化配置文件
+# 集成语义处理到VIO主流程，避免里程计飘逸
+
+# 基本传感器设置
+common:
+  lid_topic: "/livox/lidar"
+  imu_topic: "/livox/imu"  
+  img_topic: "/left_camera/image"
+  setic_topic: "/setic/image_raw"
+  
+  # 传感器启用标志
+  lidar_en: 1
+  imu_en: true
+  img_en: 1
+  setic_en: 1
+
+# VIO设置（包含集成的语义处理）
+vio:
+  normal_en: true
+  inverse_composition_en: false
+  max_iterations: 5
+  img_point_cov: 100
+  raycast_en: false
+  exposure_estimate_en: true
+  inv_expo_cov: 0.2
+  grid_size: 5
+  grid_n_height: 17
+  patch_pyrimid_level: 3
+  patch_size: 8
+  outlier_threshold: 1000
+
+# 语义处理控制（集成在VIO中）
+setic:
+  # 是否在VIO中启用语义处理
+  setic_vio_en: true
+  
+  # 语义处理频率控制（每N帧VIO处理一次语义）
+  setic_process_freq: 2  # 默认每2帧处理一次语义图像
+  
+  # 性能控制
+  setic_max_process_time: 30.0  # 语义处理最大时间限制(ms)
+  setic_skip_when_slow: true    # 当语义处理过慢时是否跳过
+  
+  # 质量控制
+  semantic_time_tolerance: 0.1  # 语义图像与RGB图像时间差容限(s)
+  
+  # 调试控制
+  setic_debug_en: false         # 是否启用语义处理调试输出
+
+# 系统性能优化
+performance:
+  # 缓冲区管理
+  max_setic_buffer_size: 3      # 最大语义图像缓冲区大小
+  auto_freq_adjust: true        # 是否根据处理时间自动调整频率
+  
+  # 超时保护
+  vio_timeout_protection: true  # VIO超时保护
+  max_vio_process_time: 100.0   # VIO最大处理时间(ms)
+
+# 状态机优化
+state_machine:
+  # 主流程：VIO <-> LIO（语义处理集成在VIO中）
+  use_simplified_flow: true     # 使用简化的VIO-LIO流程
+  disable_setic_state: true     # 禁用独立的SETIC状态
+  
+  # 语义处理策略
+  semantic_strategy: "integrated"  # "integrated" | "async" | "disabled" 
