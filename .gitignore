@@ -103,3 +103,6 @@ Thumbs.db
 # Local agent/tooling state
 .codex/
 .agents/
+
+build_old/
+devel_old/

@@ -1,8 +1,0 @@
-prefix=/home/ao/jiguang/LIVO2/ws_livo2/install
-
-Name: vikit_py
-Description: Description of vikit_py
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
