@@ -1,4 +1,4 @@
-#include "/home/liu/code/LIVO2/ws_livo2/src/FAST-LIVO2/include/semantic_loop_manager.h"
+#include "semantic_loop_manager.h"
 
 #include <algorithm>
 #include <array>

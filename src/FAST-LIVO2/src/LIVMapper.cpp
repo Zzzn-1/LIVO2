@@ -10,7 +10,7 @@ This file is subject to the terms and conditions outlined in the 'LICENSE' file,
 which is included as part of this source code package.
 */
 
-#include "/home/liu/code/LIVO2/ws_livo2/src/FAST-LIVO2/include/LIVMapper.h"
+#include "LIVMapper.h"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>

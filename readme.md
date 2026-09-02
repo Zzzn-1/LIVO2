@@ -98,12 +98,13 @@ catkin_make
 source devel/setup.bash
 roslaunch fast_livo mapping_m3dgr_mid360.launch 2>&1 | stdbuf -oL grep -E --line-buffered "\[SemanticLoop\] LOOP_EVENT"
 
-另开一个终端：
-cd /home/liu/code/LIVO2/ws_livo2
-source devel/setup.bash
-rosrun fast_livo semantic_pg_backend_node
+可以不需要，因为roslaunch fast_livo mapping_m3dgr_mid360.launch已经包含了semantic_pg_backend_node
+        另开一个终端：
+        cd /home/liu/code/LIVO2/ws_livo2
+        source devel/setup.bash
+        rosrun fast_livo semantic_pg_backend_node
 
-rosrun fast_livo semantic_pg_backend_node _odom_weight_scale:=0.5 _loop_weight_scale:=0.85
+        rosrun fast_livo semantic_pg_backend_node _odom_weight_scale:=0.5 _loop_weight_scale:=0.85
 
 
 再开终端：
